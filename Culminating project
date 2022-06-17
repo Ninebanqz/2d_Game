@@ -69,7 +69,7 @@ public class GUI extends JFrame {
 		compHpLabel = new JLabel("Computer hp: 100");
 		playerHpLabel = new JLabel("Player hp: 100");
 
-		progressHuman = new JLabel("");
+		progressHuman = new JLabel("Welcome to a 1v1 simulator! You start with 3 health potions");
 		progressComputer = new JLabel("");
 
 		defenseCtr1 = 0;
