@@ -1,0 +1,461 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+
+public class GUI extends JFrame {
+
+//Variables for buttons
+	JButton attack, defend, health; // makes the buttons
+
+//Variables for progress bars
+	Container con; // container for progress bars
+	JProgressBar playerHpBar; // playerHpBar progress bar
+	JProgressBar computerHpBar; // computerHpBar progress bar
+	JLabel progressHuman, progressComputer;
+
+//Variables for player and computer health counter
+	JPanel labelPanel, compHpPanel, playerHpPanel;
+	JLabel label, compHpLabel, playerHpLabel;
+
+//Variables for player and computer health
+	int playerHealth, computerHealth; // makes the player and computer health and random integer
+
+//Variables for attacking 
+	int criticalHit;
+	int rDamage, rDamage2, rPerry, rCriticalHit, rReducedDamage, rNumify;// Random numbers I use and counters
+
+//Variable for defending
+	int defenseCtr7, defenseCtr1, defenseCtr2, defenseCtr3, defenseCtr4, defenseCtr5, defenseCtr6;// sets counters for
+																									// // the defense
+
+//Variables for healing
+	int healpotitions = 3;
+	int heal;
+	int healthCtr1;
+
+//Random variable I used for all my attacks / defense
+	Random r = new Random();
+
+//Variables I used to indicate which attack happens
+	int typeOfAttack, ctrToActivateAttack;
+
+//Variables to count the players and computers wins     
+	int playerWinCtr, compWinCtr;
+
+//Counter I used to determine, slap, punch, kick or trip for attacking
+	int attCtr;
+
+//Variable I used for testing    
+	int ctr;
+
+//The main method
+	GUI() {
+		// Setting the values for all my variables
+		attack = new JButton("attack");
+		defend = new JButton("defend");
+		health = new JButton("heal");
+		label = new JLabel("");
+		compHpLabel = new JLabel("Computer hp: 100");
+		playerHpLabel = new JLabel("Player hp: 100");
+
+		progressHuman = new JLabel("");
+		progressComputer = new JLabel("");
+
+		defenseCtr1 = 0;
+		defenseCtr2 = 0;
+		defenseCtr3 = 0;
+		defenseCtr4 = 0;
+		defenseCtr5 = 0;
+		playerHealth = 100;
+		computerHealth = 100;
+
+		playerWinCtr = 1;
+		compWinCtr = 1;
+
+		ctrToActivateAttack = 0;
+
+		ctr = 0;
+
+		defenseCtr7 = 0;
+
+		// Progress bar/counter for player/computer health
+		labelPanel = new JPanel();
+		labelPanel.setBounds(50, 500, 800, 400);
+		labelPanel.add(label);
+		label.setFont(new Font("Sans-serif", Font.BOLD, 15));
+		
+		playerHpPanel = new JPanel();
+		playerHpPanel.setBounds(370, 100, 200, 30);
+		playerHpPanel.add(playerHpLabel);
+		playerHpLabel.setFont(new Font("Sans-serif", Font.BOLD, 20));
+
+		compHpPanel = new JPanel();
+		compHpPanel.setBounds(385, 300, 200, 30);
+		compHpPanel.add(compHpLabel);
+		compHpLabel.setFont(new Font("Sans-serif", Font.BOLD, 20));
+
+		// container for the progress bars
+		con = getContentPane();
+
+		// progress bars
+		playerHpBar = new JProgressBar(0, 100);
+		playerHpBar.setPreferredSize(new Dimension(100, 30));
+		playerHpBar.setValue(100);
+		playerHpBar.setStringPainted(true);// adds a percentage to the progress bar
+		playerHpBar.setBounds(400, 150, 250, 30);
+		playerHpBar.setForeground(Color.red);
+		con.add(playerHpBar);
+
+		computerHpBar = new JProgressBar(0, 100);
+		computerHpBar.setPreferredSize(new Dimension(100, 30));
+		computerHpBar.setValue(100);
+		computerHpBar.setStringPainted(true);
+		computerHpBar.setBounds(400, 350, 250, 30);
+		computerHpBar.setForeground(Color.blue);
+		con.add(computerHpBar);
+
+		// Sets variables for frame
+		setSize(800, 800);
+		setLayout(null);
+		pack();
+
+		// Sets the text to the top of a JPanel
+		add(labelPanel, BorderLayout.NORTH);
+
+		// Adds all the Jbutton's and JPanel's
+		add(attack);
+		add(defend);
+		add(health);
+		add(labelPanel);
+		add(playerHpPanel);
+		add(compHpPanel);
+
+		// Sets bounds for the button's
+		attack.setBounds(50, 50, 300, 100);
+		defend.setBounds(50, 200, 300, 100);
+		health.setBounds(50, 350, 300, 100);
+
+		// Sets the frame to be visible
+		setVisible(true);
+
+		// Button Handler
+		ButtonHandler buttonHandler = new ButtonHandler(); // Button handler makes the the buttons work
+		attack.addActionListener(buttonHandler);
+		defend.addActionListener(buttonHandler);
+		health.addActionListener(buttonHandler);
+	}
+
+	// implements button action listener
+	class ButtonHandler implements ActionListener {
+		
+		// Calls the buttons
+		public void actionPerformed(ActionEvent ae) {
+/////////////////////////////////////////////////////////DEFENSE BUTTON///////////////////////////////////////////////////
+			
+			// Makes each input in the if loop work when defense button is pressed
+			if (ae.getSource() == defend) {
+				
+				// rPerry stands for a random variable used to determine how you will defend
+				// ctrToActivateAttack = 1; makes it so the regular attack wont activate
+				// defenseCtr7++; makes all the attacks works, without it you cant use the attack button
+				
+				rPerry = r.nextInt(4) + 1;
+
+				// for rPerry One, this makes the opponent do full damage, defenseCtr1++ goes to one which will be used in the attack button
+				if (rPerry == 1) {
+					label.setText("Ouch! your defense totally failed and the opponent did more damage then usual!"); 
+					defenseCtr1++;
+					ctrToActivateAttack = 1;
+					defenseCtr7++;
+
+				}
+
+				// for rPerry two, this makes the opponent do reduced damage, defenseCtr2++ goes to one which will be used in the attack button
+				if (rPerry == 2) {
+					label.setText("Ouch! your defense failed but you reduced damage!");
+					rReducedDamage = r.nextInt(3) + 1; // determines reduced damage
+					System.out.println("damage reduction: " + rReducedDamage); // for checking code
+					defenseCtr2++;
+					ctrToActivateAttack = 1;
+					defenseCtr7++;
+
+				}
+				
+				// for rPerry three, this makes the opponent do 0 damage, defenseCtr3++ goes to one which will be used in the attack button
+				if (rPerry == 3) {
+					label.setText("You fully nullified the attack!"); 
+					System.out.println("You numified the attack"); // For checking code
+					defenseCtr3++;
+					ctrToActivateAttack = 1;
+					defenseCtr7++;
+
+				}
+				
+				// for rPerry four, this makes the opponent do 0 damage and you get a critical, defenseCtr4++ goes to one which will be used in the attack button
+				if (rPerry == 4) {
+					label.setText("You got a perry!!"); 
+					rCriticalHit = r.nextInt(5) + 2;
+					System.out.println("crit damage multiplier " + rCriticalHit); // For checking code
+					defenseCtr4++;
+					ctrToActivateAttack = 1;
+					defenseCtr7++;
+
+				}
+
+			}
+			///////////////////////////////////// ATTACK BUTTON////////////////////////////////
+
+			// call attack button
+			if (ae.getSource() == attack) {
+				
+				// this is the loop for the regular attack, it only works when the defense buttons are not pressed as each counter is set to 0.
+				if (defenseCtr5 == 0 && defenseCtr4 == 0 && defenseCtr3 == 0 && defenseCtr2 == 0 && defenseCtr1 == 0
+						&& playerHealth > 0) {
+					
+					// main attack with no defense attributes
+					rDamage2 = r.nextInt(10) + 5; // 
+
+					System.out.println("attack with no defense attributes, computer health: " + computerHealth
+							+ " Damage done: " + rDamage2);
+					computerHealth = computerHealth - rDamage2;
+
+					label.setText("This is a regular attack with no defense attributes, Damage delt: "
+							+ String.valueOf(rDamage2) + " Computer strikes back and deals! " + String.valueOf(rDamage)
+							+ " damage");
+
+					System.out.println("final computer hp: " + computerHealth + "\n");
+
+					ctrToActivateAttack = 0;
+
+					/// Counter attack after the intial attack
+
+					rDamage = r.nextInt(10) + 5;
+					System.out.println("computer stikes back!, damage done to player: " + rDamage);
+					playerHealth = playerHealth - rDamage;
+					System.out.println("player health: " + playerHealth);
+					ctrToActivateAttack++;
+
+				}
+
+				// WHEN rPerry == 1, this only factors in the computers attack on the player
+				if (defenseCtr1 == 1 && playerHealth > 0) {
+
+					rDamage = r.nextInt(10) + 5;
+
+					System.out.println("player health: " + playerHealth + " Damage done: " + rDamage);
+					label.setText("Ouch! you tripped and the computer did two times damage!");
+
+					int damageDelt = rDamage * 2;
+					playerHealth = playerHealth - (rDamage * 2);
+
+					rCriticalHit = 1;
+					rReducedDamage = 1;
+
+					System.out.println("final player hp: " + playerHealth + "\n");
+					defenseCtr1--;
+
+					defenseCtr6++;
+					ctr = 0;
+
+				}
+
+				// WHEN rPerry == 2, this only factors in the computers attack on the player
+				if (defenseCtr2 == 1 && playerHealth > 0) {
+					rDamage = r.nextInt(10) + 5;
+
+					System.out.println("Player health: " + computerHealth + " Damage done: " + rDamage
+							+ " defense reduction: " + rReducedDamage);
+					playerHealth = playerHealth - (rDamage / rReducedDamage);
+
+					label.setText("You reduced the damage by" + String.valueOf(rReducedDamage));
+
+					rCriticalHit = 1;
+					rReducedDamage = 1;
+
+					System.out.println("final player hp: " + playerHealth + "\n");
+					defenseCtr2--;
+					defenseCtr6++;
+					ctr = 0;
+
+				}
+				// WHEN rPerry == 3, this only factors in the computers attack on the player
+				if (defenseCtr3 == 1 && playerHealth > 0) {
+
+					rDamage = r.nextInt(10) + 5;
+
+					System.out.println("Player health: " + computerHealth + " Damage done: 0 "
+							+ " you fully numified the attack!");
+					playerHealth = playerHealth - (rDamage * 0);
+
+					label.setText("You fully nullified the attack!");
+
+					rCriticalHit = 1;
+					rReducedDamage = 1;
+
+					System.out.println("final player hp: " + playerHealth + "\n");
+					defenseCtr3--;
+					defenseCtr6++;
+					ctr = 0;
+
+				}
+				// WHEN rPerry == 4, this only factors in the computers attack on the player
+				if (defenseCtr4 == 1 && playerHealth > 0) {
+					rDamage = r.nextInt(10) + 5;
+
+					label.setText("You got a perry! you fully nullified the attack and got a critical! ");
+					System.out.println("Player health: " + playerHealth + " Damage done: " + rDamage
+							+ " numify affect which is *0");
+					playerHealth = playerHealth - (rDamage * 0);
+
+					rReducedDamage = 1;
+
+					System.out.println("final player hp: " + playerHealth + "\n");
+					defenseCtr4--;
+
+					defenseCtr6++;
+					ctr = 0;
+
+				}
+
+				// This is the counter attack from the player after the computer hits him, each little loop sets the attCtr variable for the end
+				if (defenseCtr6 == 1 && ctrToActivateAttack == 1 && playerHealth > 0) {
+					
+					// sets the random number for what type of attack you do
+					typeOfAttack = r.nextInt(9) + 1;
+
+					// this is the weakest attack that does 1-5 damage, this attack is a 1 in 3 chance
+						attCtr = r.nextInt(4) + 1;
+						System.out.println("You use slap! that must sting at least a little, damage delt: " + attCtr);
+						label.setText("You use slap! that must sting at least a little, damage delt: "
+								+ String.valueOf(attCtr));
+
+					}
+
+				    // this is the second weakest attack that does 5-10 damage, this attack is a 1 in 3 chance
+					if (typeOfAttack <= 6 && typeOfAttack >= 4) {
+						attCtr = r.nextInt(9) + 6;
+						System.out.println("Nice! you used upper cut and got a good hit in, damage delt: " + attCtr);
+						label.setText("Nice! you used upper cut and got a good hit in, damage delt: "
+								+ String.valueOf(attCtr));
+
+					}
+
+					// this is the second strongest attack that does 15-20 damage, this attack is a 1 in 3 chance
+					if (typeOfAttack <= 9 && typeOfAttack >= 7) {
+						attCtr = r.nextInt(14) + 11;
+						System.out.println("Pow! you landed a great kick, damage delt: " + attCtr);
+						label.setText("Pow! you landed a great kick, damage delt: " + String.valueOf(attCtr));
+
+					}
+					
+					// this is the strongest attack that does 20-25 damage, this one is really hard to get, 1 in 10 chance
+					if (typeOfAttack == 10) {
+						attCtr = r.nextInt(20) + 16;
+						System.out.println("Ouch!, what a low blow, not cool man, damage delt: " + attCtr);
+						label.setText("Ouch!, what a low blow, not cool man, damage delt: " + String.valueOf(attCtr));
+
+					}
+
+					// The counter attack to the computer, damage is set from the previous lines of code
+					computerHealth = computerHealth - (attCtr * rCriticalHit);
+					System.out.println("Final computer hp: " + computerHealth + "\n");
+					defenseCtr6--;
+					rCriticalHit = 1;
+				}
+
+			    // sets the progress bar and and health counter go up and down
+				compHpLabel.setText("Computer hp: " + String.valueOf(computerHealth));
+				playerHpLabel.setText("Players hp: " + String.valueOf(playerHealth));
+				computerHpBar.setValue(computerHealth);
+				playerHpBar.setValue(playerHealth);
+
+				ctrToActivateAttack--;
+				ctr = 0;
+
+				if (playerHealth < 0) {
+					label.setText(
+							"computer wins, if you wish to play again please restart the program, you beat the computer: "
+									+ String.valueOf(playerWinCtr) + " times");
+					System.out.println(
+							"computer wins, if you wish to play again please restart the program, you beat the computer: "
+									+ playerWinCtr + " times");
+					compWinCtr++;
+
+				} else if (computerHealth < 0) {
+					System.out.println("player wins! " + " Player has won: " + playerWinCtr + " Times ");
+					label.setText("player wins! Player has won: " + String.valueOf(playerWinCtr) + " amount of games");
+
+					playerWinCtr++;
+
+					if (playerHealth > 0) {
+						computerHealth = 100;
+					}
+				
+				defenseCtr7--;
+			}
+
+			/////////////////////////////////////////////// HEAL BUTTON/////////////////////////////////////////////
+			if (ae.getSource() == health) {
+
+				// makes the loop run unless you are at 0 health potions
+				if (healpotitions != 0) {
+
+					// sets the random heal variable
+					heal = r.nextInt(26) + 4;
+
+					// makes it so you can only heal when alive
+					if (playerHealth > 0) {
+						playerHealth = playerHealth + heal;
+					}
+
+					// makes it so you can't heal past 100 hp
+					if (playerHealth > 100) {
+						playerHealth = 100;
+					}
+
+					// displays that you are dead and that you can't heal anymore
+					if (playerHealth < 0) {
+						playerHpBar.setValue(playerHealth);
+
+						label.setText("you are dead, please restart");
+						System.out.println("you are dead");// for checking code
+					}
+
+					// sets label to how much you healed
+					label.setText("You healed!, you have " + String.valueOf(healpotitions-1) + " heal potions left");
+
+					System.out.println("amount healed: " + heal + " final hp: " + playerHealth + " You have "
+							+ (healpotitions - 1) + " left");
+					healpotitions--;
+				} else {
+					label.setText("You are out of heal potions");
+					System.out.println("You are out of heal potions");
+				}
+
+				// sets values of health bars and counters
+				compHpLabel.setText("Computer hp: " + String.valueOf(computerHealth));
+				playerHpLabel.setText("Players hp: " + String.valueOf(playerHealth));
+				computerHpBar.setValue(computerHealth);
+				playerHpBar.setValue(playerHealth);
+
+			}
+
+		}
+	}
+
+	public static void main(String args[]) {
+		new GUI(); // adds method to main string
+
+	}
+}
